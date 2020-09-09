@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>form</title>
+	<style>
+		body{
+			background-image:url("{{url_for('static',filename='images/book.jpg')}}");
+			width: auto;
+			height: 100%;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			background-attachment: fixed;
+		}
+		.login{
+           height: 100px;
+           width:100px;
+           border-radius: 50%;
+           position: absolute;
+           top:-50px;
+           left: calc(50% - 50px);
+		}
+		.loginbox{
+			height: 320px;
+			width:320px;
+			background: #000;
+			color: #fff;
+			top:30%;
+			left: 40%;
+			position: absolute;
+			padding: 70px 30px;
+			
+		}
+		.loginbox h1{
+			margin: 0;
+			padding: 0 0 20px;
+			text-align: center;
+			font-size: 30px;
+		}
+		.loginbox label{
+			margin: 0;
+			padding: 0;
+			font-weight: bold;
+		}
+		.loginbox input{
+			width: 300px;
+			margin-bottom: 20px;
+			height: 40px;
+			border:none;
+			border-bottom: 1px solid #fff;
+			background:transparent;
+			color: white;
+			outline: none;
+			font-size: 16px;
+
+		}
+		.loginbox a{
+			text-decoration:none;
+			border:1px solid black;
+			padding 8u: 20px;
+			outline: none;
+			height: 40px;
+			width: 200px;
+            margin-left: 50px;
+			background:blue;
+			font-size: 18px;
+			border-radius: 20px;
+			color: black;
+		}
+		.loginbox a:hover{
+           cursor: pointer;
+           color:white;    
+		}
+		
+        .loginbox button{
+        	
+        	outline: none;
+			height: 40px;
+			width: 200px;
+            margin-left: 50px;
+			background:blue;
+			font-size: 18px;
+			border-radius: 20px;
+			text-align: center;
+        }
+          .loginbox button:hover{
+          	cursor: pointer;
+          	color: white;
+          }
+	</style>
+</head>
+<body>
+	
+	<div class="loginbox">
+	   	<img src="{{url_for('static',filename='images/login.png')}}" class="login">
+	<h1>Register</h1>
+	<form action="{{url_for('registering')}}" method="post">
+	   
+	   	<label for="USERNAME">Username</label><br>
+	   	<input type="text" name="USERNAME" id="username" placeholder="Enter username" required><br>
+	   
+	   
+	   	<label for="PASSWORD">Password</label><br>
+	   	<input type="password" name="PASSWORD" id="password" placeholder="Enter password" required><br>
+	   
+	   
+	   
+	   <button type="submit">submit</button>
+	   
+	  	  
+	</form>
+   </div>
+</body>
+</html>

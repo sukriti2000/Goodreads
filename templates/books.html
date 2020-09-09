@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>books</title>
+     <style>
+         *{
+          padding: 0;
+          margin: 0;
+          font-family: Goudy Old Style;
+         }
+         body{
+               background-image:url("{{url_for('static',filename='images/book.jpg')}}");
+               width: auto;
+               height: 100%;
+               background-repeat: no-repeat;
+               background-position: center;
+               background-size: cover;
+               background-attachment: fixed;
+          }
+    .whole{
+  
+     padding-left: 10%;
+     position: absolute;
+     font-weight: bold;
+
+    }
+    .whole h1{
+     font-size: 50px;
+     color: white;
+     padding-bottom: 30px;
+    }
+    .whole ul li{
+     list-style: none;
+     font-size: 30px;
+     color: white;
+
+    }
+    
+    .whole select{
+     height: 50px;
+     width: 50px;
+     border-radius: 20px;
+     padding-left: 10px;
+    }
+    .whole button{
+     border-radius: 20px;
+     height: 40px;
+     width: 60px;
+     background-color: black;
+     color: white;
+     margin-top: 20px;
+     margin-left: 90px;
+     border:none;
+     font-weight: bold;
+     font-size: 16px;
+
+    }
+    .whole button:hover{
+     cursor: pointer;
+     background-color: white;
+     color: black;
+     transition: ease 0.6s;
+
+    }
+    .rev{
+      margin-top: 3%;
+      overflow: scroll;
+     margin-left:50%;
+     width:30%;
+     height: 500px;
+    }
+
+     .rev ul li{
+     list-style: none;
+
+     border:1px solid white;
+     padding: 10px;
+     background-color: black;
+     border-radius: 20px;
+     color: white;
+    text-align: justify;
+  }
+  .logout{
+     top: 20px;
+     right:40px; 
+  }
+  .logout button{
+     float: right;
+     margin-top: 30px;
+     margin-right: 30px;
+     border-radius: 20px;
+     background-color:black;
+     color: white; 
+     border:none;
+     height: 40px;
+     width: 70px;
+     font-size: 18px;
+    
+  }
+  .logout button:hover{
+     cursor: pointer;
+     background-color:white;
+     color: black; 
+     transition: ease 0.6s;
+  }
+     </style>
+  }
+</head>
+<body>
+    <div class="logout">
+         <form action="{{url_for('logout')}}">
+              <button type="submit" >Logout</button>
+         </form>
+    </div>
+     <div class="whole">
+          
+	<h1> {{books.title}}</h1>
+	<ul>
+		
+		<li>AUTHOR : {{books.author}}</li>
+		<li>YEAR : {{books.year}}</li>
+		<li>ISBN : {{books.isbn}}</li>
+    <li>Average rating : {{a}} </li>
+    <li>Number of ratings : {{n}}</li>
+	</ul>
+
+     <form action="{{url_for('review',books_id=books.id)}}" method="post">
+     	<h1 style="font-size: 30px; padding-top: 5px;">Share your experience:</h1>
+     	<textarea name="review" rows="7" cols="`15" style="padding-bottom: 5px; font-size: 20px; padding: 20px;"></textarea><br>
+     	<select name="rating">
+     		<option>1</option>
+     		<option>2</option>
+     		<option>3</option>
+     		<option>4</option>
+     		<option selected>5</option>
+     	</select><br>
+     	<button type="submit">Submit</button>
+     </form>
+    </div>
+    <div class="rev">
+
+     <ul>
+           {%for rev in reviews%}
+          <li>Username : {{rev.username}}<br>
+          Review : {{rev.review}}<br>
+          Rating : {{rev.rating}}</li>
+          {%endfor%}
+     </ul>
+</div>
+</body>
+</html>
