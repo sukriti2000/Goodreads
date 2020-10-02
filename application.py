@@ -8,7 +8,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from datetime import timedelta 
 
-# setting up a flask app
 app = Flask(__name__)
 app.secret_key = 'BOOKSFORLIFE'
 
@@ -26,7 +25,6 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-# fetch book with isbn number and return a json object with details of the book
 @app.route("/api/<string:isbn>")
 def json(isbn):
 	result=db.execute("SELECT * FROM BOOKS WHERE isbn=:isbn",{"isbn":isbn}).fetchone()
@@ -47,22 +45,17 @@ def json(isbn):
 		"average_count" : average
 		})	
 
-# Open the page on default route
 @app.route("/")
 def index():
     return render_template('main.html')
 
-# /login will take you to the login page
 @app.route("/login")
 def login():
     return render_template('login.html')
 
-# /register will take you to the register page
 @app.route("/register")
 def register():
     return render_template('register.html')
-
-# The route which will be called when you submit registration form
 @app.route("/registering",methods=["GET","POST"])
 def registering():
 	if request.method=="GET":
@@ -71,12 +64,11 @@ def registering():
 	else:
 		username=request.form.get("USERNAME")
 		password=request.form.get("PASSWORD")
-		# insert new User into the table
 		db.execute("INSERT INTO users(username,password) VALUES(:username,:password)",{"username":username,"password":password})
 		db.commit()
 		return redirect(url_for("login"))
 
-# The route which will be called when you submit login form
+
 @app.route("/logging",methods=["GET","POST"])
 def logging():
 	if request.method=="GET":
@@ -84,7 +76,6 @@ def logging():
 	else:
 		username=request.form.get("username")
 		password=request.form.get("password")
-		# check if the username and password match
 		Check=db.execute("SELECT * FROM USERS WHERE username=:username AND password=:password",{"username":username,"password":password}).fetchone()
 		if Check is None:
 			return f"<h1>No such user found</h1>"
@@ -92,8 +83,6 @@ def logging():
 			user=username
 			session["user"]=user
 			return redirect(url_for("user"))
-
-# create a session for the current user
 @app.route("/user")
 def user():
 	if "user" in session:
@@ -102,13 +91,11 @@ def user():
 	else:
 		return redirect(url_for("login"))
 
-# logout from the application
 @app.route("/logout")
 def logout():
 	session.pop("user",None)
 	return redirect(url_for("login"))				
 
-# search any book by title , author or isbn from database using LIKE query
 @app.route("/search", methods=["POST"])
 def search():
 	search=request.form.get("search")
@@ -119,7 +106,6 @@ def search():
 		result=db.execute("SELECT * FROM BOOKS WHERE isbn LIKE'%"+search+"%'").fetchall()
 	return render_template("search.html",result=result)	
 		
-# returning a book with particular book id from database
 @app.route("/books/<int:books_id>")
 def books(books_id):
 	"Details about books:"
@@ -133,13 +119,12 @@ def books(books_id):
 		number_of_ratings=book["work_ratings_count"]
 	return render_template("books.html",books=books,reviews=reviews,a=average_rating,n=number_of_ratings)	
     
-# add review for a book
+
 @app.route("/review/<int:books_id>",methods=["POST"])
 def review(books_id):
 	review=request.form.get("review")
 	rating=request.form.get("rating")
 	user=session["user"]
-	# check if current user has already submitted a review for the book
 	count=db.execute("SELECT * FROM REVIEW WHERE username=:username and book_id=:book_id",{"username":user,"book_id":books_id}).fetchone()
 	if count is None:
 		db.execute("INSERT INTO REVIEW(username,book_id,review,rating) VALUES(:username,:book_id,:review,:rating)",{"username":user,"book_id":books_id,"review":review,"rating":rating})
